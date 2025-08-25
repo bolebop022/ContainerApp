@@ -8,7 +8,7 @@
 class BoxMemento : public ContainerMemento
 {
 public:
-    BoxMemento(QString& serialNo, double weight, double length, double height, double width):
+    BoxMemento(QString serialNo, double weight, double length, double height, double width):
         ContainerMemento(serialNo, weight), length(length), height(height), width(width) {};
     const double getSavedLenght() const;
     const double getSavedHeight() const;

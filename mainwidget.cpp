@@ -94,6 +94,9 @@ MainWidget::MainWidget(QWidget *parent) :
     // postLayout->addWidget(buttonPostXML);
     // postLayout->addWidget(displayPalletXML);
 
+    // Connect slots
+    connect(buttonAddBox, &QPushButton::clicked, this, &MainWidget::createBoxContainer);
+
     // setting main widget
     QVBoxLayout *vertical(new QVBoxLayout);
     vertical->addWidget(containerWidget);
@@ -111,6 +114,7 @@ void MainWidget::createBoxContainer()
 
     // Backup box item
     history.addMemento(newBox->createMemento());
+    qDebug() << newBox->getserialNo();
     displayUnallocated->addItem(newBox->getserialNo());
 
 

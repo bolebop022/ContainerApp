@@ -5,14 +5,14 @@
 
 class Container{
 protected:
-    QString& serialNo;
+    QString serialNo;
     double weight;
 
 public:
     Container(QString& serialNo, double weight): serialNo(serialNo), weight(weight){};
     virtual int getVolume() const = 0;
     const double getWeight() const { return weight; };
-    QString& getserialNo() const{ return serialNo; };
+    QString getserialNo() const{ return serialNo; };
 
 
 };

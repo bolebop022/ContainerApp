@@ -9,7 +9,7 @@ private:
     double weight;
 
 public:
-    ContainerMemento(QString& serialNo, double weight): serialNo(serialNo), weight(weight) {};
+    ContainerMemento(QString serialNo, double weight): serialNo(serialNo), weight(weight) {};
     const double getSavedWeight(){ return weight; };
     const QString& getSavedSerialNo() const { return serialNo; };
 };

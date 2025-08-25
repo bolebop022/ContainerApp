@@ -3,8 +3,6 @@
 
 SimpleContainerFactory::SimpleContainerFactory():boxCode(1), cylinderCode(1) {}
 
-SimpleContainerFactory* SimpleContainerFactory::instance = nullptr;
-
 
 SimpleContainerFactory& SimpleContainerFactory::getInstance()
 {
