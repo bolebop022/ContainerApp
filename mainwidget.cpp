@@ -84,12 +84,12 @@ MainWidget::MainWidget(QWidget *parent) :
     tabLayoutContainer->addWidget(bottomWidget, 1, 0, 1, 2);
     containerWidget->setLayout(tabLayoutContainer);
 
-    // Tab 2 - Post XML
-    QWidget *postWidget(new QWidget);
-    QVBoxLayout *postLayout(new QVBoxLayout);
-    postWidget->setLayout(postLayout);
-    postLayout->addWidget(buttonPostXML);
-    postLayout->addWidget(displayPalletXML);
+    // // Tab 2 - Post XML
+    // QWidget *postWidget(new QWidget);
+    // QVBoxLayout *postLayout(new QVBoxLayout);
+    // postWidget->setLayout(postLayout);
+    // postLayout->addWidget(buttonPostXML);
+    // postLayout->addWidget(displayPalletXML);
 
     // setting main widget
     QVBoxLayout *vertical(new QVBoxLayout);

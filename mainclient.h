@@ -19,8 +19,6 @@ public:
 public slots:
 
 
-
-
 private:
     QTabWidget* setUpTabWindows();
 

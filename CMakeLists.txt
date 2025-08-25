@@ -24,9 +24,20 @@ set(PROJECT_SOURCES
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ContainerApp
-        MANUAL_FINALIZATION
+        MANUAL_FINALIZATION WIN32
         ${PROJECT_SOURCES}
         postwidget.h postwidget.cpp
+
+        container.h
+        box.h box.cpp
+
+        cylinder.h cylinder.cpp
+
+        simplecontainerfactory.h simplecontainerfactory.cpp
+        containermemento.h
+        cylindermemento.h cylindermemento.cpp
+        boxmemento.h boxmemento.cpp
+        inventoryhistory.h inventoryhistory.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET ContainerApp APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -63,11 +74,31 @@ set_target_properties(ContainerApp PROPERTIES
 )
 
 include(GNUInstallDirs)
-install(TARGETS ContainerApp
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+# install(TARGETS ContainerApp
+#     BUNDLE DESTINATION .
+#     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+# )
+
+# Windows Deployment (MinGW)
+if(WIN32 AND MINGW)
+    # Get Qt's MinGW bin path (where windeployqt.exe is)
+    get_target_property(QT_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+    get_filename_component(QT_BIN_DIR "${QT_QMAKE_EXECUTABLE}" DIRECTORY)
+    set(WINDEPLOYQT_EXECUTABLE "${QT_BIN_DIR}/windeployqt.exe")
+
+    # Run windeployqt after build
+    add_custom_command(TARGET ContainerApp POST_BUILD
+        COMMAND ${WINDEPLOYQT_EXECUTABLE}
+                $<TARGET_FILE:ContainerApp>
+                --verbose 1
+                --no-compiler-runtime
+                --no-opengl-sw
+        COMMENT "Deploying Qt libraries with MinGW..."
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        VERBATIM
+    )
+endif()
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(ContainerApp)
