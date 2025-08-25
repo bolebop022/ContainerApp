@@ -1,4 +1,5 @@
 #include "inventoryhistory.h"
+#include <functional>
 
 InventoryHistory& InventoryHistory::getInstance()
 {
@@ -6,14 +7,14 @@ InventoryHistory& InventoryHistory::getInstance()
     return instance;
 }
 
-void InventoryHistory::addMemento(const ContainerMemento& memento)
+void InventoryHistory::addMemento(QSharedPointer<ContainerMemento> memento)
 {
     mementos.push_back(memento);
 }
 
-std::optional<ContainerMemento> InventoryHistory::getMemento(int index) const
+std::optional<std::reference_wrapper<const ContainerMemento>>  InventoryHistory::getMemento(int index) const
 {
     if (index < 0 || index >= mementos.size())
         return std::nullopt;
-    return mementos.at(index);
+    return std::cref(*mementos.at(index));
 }

@@ -27,6 +27,8 @@ private:
     QPushButton *buttonPostXML;
     QTextEdit *displayPalletXML;
     QWidget *postWidget;
+
+    void createBoxContainer();
 };
 
 #endif // MAINWIDGET_H

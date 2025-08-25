@@ -3,6 +3,7 @@
 
 #include "container.h"
 #include "cylindermemento.h"
+#include <QSharedPointer>
 
 class Cylinder : public Container
 {
@@ -11,7 +12,7 @@ public:
     double getDiameter() const;
     double getHeight() const;
     int getVolume() const override;
-    std::unique_ptr<CylinderMemento> createMemento() const;
+    QSharedPointer<CylinderMemento> createMemento() const;
     void restoreFromMemento(CylinderMemento& memento);
 private:
     double diameter;

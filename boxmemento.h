@@ -3,6 +3,7 @@
 
 #include "containermemento.h"
 #include <QString>
+#include <QSharedPointer>
 
 class BoxMemento : public ContainerMemento
 {

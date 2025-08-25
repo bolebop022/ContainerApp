@@ -2,6 +2,7 @@
 #define INVENTORYHISTORY_H
 
 #include <QVector>
+#include <QSharedPointer>
 #include <optional>
 #include "containermemento.h"
 
@@ -9,11 +10,11 @@ class InventoryHistory
 {
 public:
     static InventoryHistory& getInstance();
-    void addMemento(const ContainerMemento& memento);
-    std::optional<ContainerMemento> getMemento(int index) const;
+    void addMemento(QSharedPointer<ContainerMemento> memento);
+    std::optional<std::reference_wrapper<const ContainerMemento>> getMemento(int index) const;
 
 private:
-    QVector<ContainerMemento> mementos;
+    QVector<QSharedPointer<ContainerMemento>> mementos;
 
     // Private constructor
     InventoryHistory() = default;

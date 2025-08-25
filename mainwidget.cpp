@@ -1,4 +1,6 @@
 #include "mainwidget.h"
+#include "simplecontainerfactory.h"
+#include "inventoryhistory.h"
 #include <QSpinBox>
 #include <QPushButton>
 #include <QListWidget>
@@ -6,6 +8,7 @@
 #include <QGroupBox>
 #include <QGridLayout>
 #include <QLabel>
+#include <QSharedPointer>
 
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent),
@@ -96,6 +99,21 @@ MainWidget::MainWidget(QWidget *parent) :
     vertical->addWidget(containerWidget);
     // vertical->addWidget(postWidget);
     setLayout(vertical);
+}
+
+void MainWidget::createBoxContainer()
+{
+    SimpleContainerFactory& factory = SimpleContainerFactory::getInstance();
+    InventoryHistory& history = InventoryHistory::getInstance();
+
+    // Create box item
+    QSharedPointer<Box> newBox = factory.createBoxContainer(box_weight->value(), box_length->value(), box_height->value(), box_breadth->value());
+
+    // Backup box item
+    history.addMemento(newBox->createMemento());
+    displayUnallocated->addItem(newBox->getserialNo());
+
+
 }
 
 MainWidget::~MainWidget()

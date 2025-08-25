@@ -4,6 +4,7 @@
 #include "container.h"
 #include "boxmemento.h"
 #include <QString>
+#include <QSharedPointer>
 
 class Box : public Container
 {
@@ -18,7 +19,7 @@ public:
     double getWidth() const;
 
     // Memento functions
-    std::unique_ptr<BoxMemento> createMemento() const;
+    QSharedPointer<BoxMemento> createMemento() const;
     void restoreFromMemento(BoxMemento& memento);
 
 private:

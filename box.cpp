@@ -26,9 +26,9 @@ double Box::getWidth() const
     return width;
 }
 
-std::unique_ptr<BoxMemento> Box::createMemento() const
+QSharedPointer<BoxMemento> Box::createMemento() const
 {
-    return std::make_unique<BoxMemento>(this->getserialNo(), this->getWeight(), length, height, width);
+    return QSharedPointer<BoxMemento>::create(this->getserialNo(), this->getWeight(), length, height, width);
 }
 
 void Box::restoreFromMemento(BoxMemento& memento)

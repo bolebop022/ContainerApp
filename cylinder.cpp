@@ -21,9 +21,9 @@ double Cylinder::getHeight() const
     return height;
 }
 
-std::unique_ptr<CylinderMemento> Cylinder::createMemento() const
+QSharedPointer<CylinderMemento> Cylinder::createMemento() const
 {
-    return std::make_unique<CylinderMemento>(serialNo, weight, diameter, height);
+    return QSharedPointer<CylinderMemento>::create(serialNo, weight, diameter, height);
 }
 
 void Cylinder::restoreFromMemento(CylinderMemento& memento)

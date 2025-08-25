@@ -4,6 +4,8 @@
 #include "box.h"
 #include "cylinder.h"
 
+#include <QSharedPointer>
+
 
 class SimpleContainerFactory
 {
@@ -23,8 +25,8 @@ public:
 
     static SimpleContainerFactory& getInstance();
 
-    std::unique_ptr<Box> createBoxContainer(double weight, double length, double height, double width);
-    std::unique_ptr<Cylinder> createCylinderContainer(double weight, double diameter, double height);
+    QSharedPointer<Box> createBoxContainer(double weight, double length, double height, double width);
+    QSharedPointer<Cylinder> createCylinderContainer(double weight, double diameter, double height);
 };
 
 #endif // SIMPLECONTAINERFACTORY_H
