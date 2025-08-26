@@ -13,9 +13,8 @@ SimpleContainerFactory& SimpleContainerFactory::getInstance()
 QSharedPointer<Box> SimpleContainerFactory::createBoxContainer(double weight, double length, double height, double width)
 {
     QDateTime* currentDateTime = new QDateTime();
-    int year = currentDateTime->currentDateTime().date().year();
-    int month = currentDateTime->currentDateTime().date().month();
-    QString serialNumber = QString::number(year) + "/" + QString::number(month)+ "/" + "B" + QString::number(boxCode++);
+    QString currentStringDate = currentDateTime->currentDateTime().toString("yyyy/MM/");
+    QString serialNumber = currentStringDate + "B" + QString::number(boxCode++);
     delete currentDateTime;
     return QSharedPointer<Box>::create(serialNumber, weight, length, height, width);
 }
@@ -23,9 +22,8 @@ QSharedPointer<Box> SimpleContainerFactory::createBoxContainer(double weight, do
 QSharedPointer<Cylinder> SimpleContainerFactory::createCylinderContainer(double weight, double diameter, double height)
 {
     QDateTime* currentDateTime = new QDateTime();
-    int year = currentDateTime->currentDateTime().date().year();
-    int month = currentDateTime->currentDateTime().date().month();
-    QString serialNumber = QString::number(year) + "/" + QString::number(month)+ "/" + "C" + QString::number(boxCode++);
+    QString currentStringDate = currentDateTime->currentDateTime().toString("yyyy/MM/");
+    QString serialNumber = currentStringDate + "C" + QString::number(cylinderCode++);
     delete currentDateTime;
     return QSharedPointer<Cylinder>::create(serialNumber, weight, diameter, height);
 }

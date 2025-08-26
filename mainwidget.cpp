@@ -95,7 +95,10 @@ MainWidget::MainWidget(QWidget *parent) :
     // postLayout->addWidget(displayPalletXML);
 
     // Connect slots
+    // Box container creation slot
     connect(buttonAddBox, &QPushButton::clicked, this, &MainWidget::createBoxContainer);
+    // Cylinder container creation slot
+    connect(buttonAddCylinder, &QPushButton::clicked, this, &MainWidget::createCylinderContainer);
 
     // setting main widget
     QVBoxLayout *vertical(new QVBoxLayout);
@@ -116,8 +119,20 @@ void MainWidget::createBoxContainer()
     history.addMemento(newBox->createMemento());
     qDebug() << newBox->getserialNo();
     displayUnallocated->addItem(newBox->getserialNo());
+}
 
+void MainWidget::createCylinderContainer()
+{
+    SimpleContainerFactory& factory = SimpleContainerFactory::getInstance();
+    InventoryHistory& history = InventoryHistory::getInstance();
 
+    // Create box item
+    QSharedPointer<Cylinder> newContainer = factory.createCylinderContainer(cylinder_weight->value(), cylinder_diameter->value(), cylinder_height->value());
+
+    // Backup box item
+    history.addMemento(newContainer->createMemento());
+    qDebug() << newContainer->getserialNo();
+    displayUnallocated->addItem(newContainer->getserialNo());
 }
 
 MainWidget::~MainWidget()

@@ -28,7 +28,9 @@ private:
     QTextEdit *displayPalletXML;
     QWidget *postWidget;
 
+    // Creation methods
     void createBoxContainer();
+    void createCylinderContainer();
 };
 
 #endif // MAINWIDGET_H
