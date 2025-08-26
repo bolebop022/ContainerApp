@@ -26,7 +26,7 @@ double Box::getWidth() const
     return width;
 }
 
-QSharedPointer<BoxMemento> Box::createMemento() const
+QSharedPointer<ContainerMemento> Box::createMemento() const
 {
     return QSharedPointer<BoxMemento>::create(this->getserialNo(), this->getWeight(), length, height, width);
 }

@@ -21,7 +21,7 @@ double Cylinder::getHeight() const
     return height;
 }
 
-QSharedPointer<CylinderMemento> Cylinder::createMemento() const
+QSharedPointer<ContainerMemento> Cylinder::createMemento() const
 {
     return QSharedPointer<CylinderMemento>::create(serialNo, weight, diameter, height);
 }

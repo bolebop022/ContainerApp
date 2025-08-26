@@ -1,0 +1,57 @@
+@startuml
+
+abstract class Container {
+    - QString serialNo
+    - double weight
+    --
+    + Container(QString serialNo, double weight)
+    + getVolume() : int
+    + getWeight() : double
+    + getSerialNo() : QString
+    {abstract} + createMemento() : QSharedPointer<ContainerMemento>
+}
+
+class Box {
+    - double length
+    - double height
+    - double width
+    --
+    + Box(QString serialNo, double weight, double length, double height, double width)
+    + getVolume() : int
+    + getLength() : double
+    + getHeight() : double
+    + getWidth() : double
+    + createMemento() : QSharedPointer<ContainerMemento>
+    + restoreFromMemento(BoxMemento& memento)
+}
+
+class Cylinder {
+    - double diameter
+    - double height
+    --
+    + Cylinder(QString serialNo, double weight, double diameter, double height)
+    + getDiameter() : double
+    + getHeight() : double
+    + getVolume() : int
+    + createMemento() : QSharedPointer<ContainerMemento>
+    + restoreFromMemento(CylinderMemento& memento)
+}
+
+class ContainerMemento
+class BoxMemento
+class CylinderMemento
+
+Container <|-- Box
+Container <|-- Cylinder
+
+ContainerMemento <|-- BoxMemento
+ContainerMemento <|-- CylinderMemento
+
+note right of Container
+  Abstract base class.
+  Stored inside QVector<
+    QSharedPointer<Container>
+  >
+end note
+
+@enduml

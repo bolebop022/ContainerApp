@@ -2,6 +2,8 @@
 #define CONTAINER_H
 
 #include <QString>
+#include <QSharedPointer>
+#include "containermemento.h"
 
 class Container{
 protected:
@@ -13,7 +15,8 @@ public:
     virtual int getVolume() const = 0;
     const double getWeight() const { return weight; };
     QString getserialNo() const{ return serialNo; };
-
+    virtual QSharedPointer<ContainerMemento> createMemento() const = 0;
+    // virtual void restoreFromMemento(ContainerMemento& memento) = 0;
 
 };
 

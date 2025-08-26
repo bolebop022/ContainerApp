@@ -129,10 +129,26 @@ void MainWidget::createCylinderContainer()
     // Create box item
     QSharedPointer<Cylinder> newContainer = factory.createCylinderContainer(cylinder_weight->value(), cylinder_diameter->value(), cylinder_height->value());
 
-    // Backup box item
-    history.addMemento(newContainer->createMemento());
+    // Add containter to unallocated container list
+    unallocatedContainers.push_back(newContainer);
+
+    // // Backup box item
+    // history.addMemento(newContainer->createMemento());
+
     qDebug() << newContainer->getserialNo();
     displayUnallocated->addItem(newContainer->getserialNo());
+}
+
+void MainWidget::backUpContainers()
+{
+    InventoryHistory& history = InventoryHistory::getInstance();
+
+    for(auto& container: unallocatedContainers)
+    {
+        history.addMemento(container->createMemento());
+    }
+
+    qDebug() << history.getMemento(0)->get().getSavedSerialNo();
 }
 
 MainWidget::~MainWidget()

@@ -19,7 +19,7 @@ public:
     double getWidth() const;
 
     // Memento functions
-    QSharedPointer<BoxMemento> createMemento() const;
+    QSharedPointer<ContainerMemento> createMemento() const override;
     void restoreFromMemento(BoxMemento& memento);
 
 private:
