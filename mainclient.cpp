@@ -20,7 +20,8 @@ MainClient::MainClient(QWidget *parent)
     // Initialize window
     setCentralWidget(setUpTabWindows());
     setWindowTitle("Container");
-    setMaximumSize(600, 400);
+    setMinimumSize(700, 500);
+    setMaximumSize(800, 600);
     setWindowState(Qt::WindowMaximized);
     statusBar()->showMessage("Ready");
 }

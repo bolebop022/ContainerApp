@@ -24,7 +24,8 @@ MainWidget::MainWidget(QWidget *parent) :
     displayUnallocated (new QListWidget),
     palletNumber(new QSpinBox()),
     buttonMoveToPallet(new QPushButton("Move to pallet")),
-    buttonBackupRestore(new QPushButton("Backup")),
+    buttonBackup(new QPushButton("Backup")),
+    buttonRestore(new QPushButton("Restore")),
     buttonPostXML(new QPushButton("Post XML to network")),
     displayPalletXML(new QTextEdit)
 {
@@ -78,7 +79,8 @@ MainWidget::MainWidget(QWidget *parent) :
     bottomLayout->addWidget(buttonMoveToPallet, 3, 1);
     QLabel *labelBlank2(new QLabel);
     cylinderlayout->addWidget(labelBlank2, 4, 1);
-    bottomLayout->addWidget(buttonBackupRestore, 5, 1);
+    bottomLayout->addWidget(buttonBackup, 4, 1);
+    bottomLayout->addWidget(buttonRestore, 5, 1);
 
     QWidget *containerWidget(new QWidget);
     QGridLayout *tabLayoutContainer(new QGridLayout);
@@ -99,6 +101,9 @@ MainWidget::MainWidget(QWidget *parent) :
     connect(buttonAddBox, &QPushButton::clicked, this, &MainWidget::createBoxContainer);
     // Cylinder container creation slot
     connect(buttonAddCylinder, &QPushButton::clicked, this, &MainWidget::createCylinderContainer);
+    // Backup unnallocated containers
+    connect(buttonBackup, &QPushButton::clicked, this, &MainWidget::backUpContainers);
+    // Restore backed up unnallocated containers
 
     // setting main widget
     QVBoxLayout *vertical(new QVBoxLayout);
@@ -148,8 +153,11 @@ void MainWidget::backUpContainers()
         history.addMemento(container->createMemento());
     }
 
+    // Debugging purposes
     qDebug() << history.getMemento(0)->get().getSavedSerialNo();
 }
+
+
 
 MainWidget::~MainWidget()
 {

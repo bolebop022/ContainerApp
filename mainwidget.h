@@ -28,7 +28,7 @@ private:
     QPushButton *buttonAddBox, *buttonAddCylinder;
     QListWidget *displayUnallocated;
     QSpinBox *palletNumber;
-    QPushButton *buttonMoveToPallet, *buttonBackupRestore;
+    QPushButton *buttonMoveToPallet, *buttonBackup, *buttonRestore;
     QPushButton *buttonPostXML;
     QTextEdit *displayPalletXML;
     QWidget *postWidget;
