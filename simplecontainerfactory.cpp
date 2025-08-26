@@ -14,7 +14,11 @@ QSharedPointer<Box> SimpleContainerFactory::createBoxContainer(double weight, do
 {
     QDateTime* currentDateTime = new QDateTime();
     QString currentStringDate = currentDateTime->currentDateTime().toString("yyyy/MM/");
-    QString serialNumber = currentStringDate + "B" + QString::number(boxCode++);
+    QString serialNumber = "";
+    if (boxCode <= 9999)
+        serialNumber = currentStringDate + "B" + QString::number(boxCode++);
+    else
+        serialNumber = "Max containers reached.";
     delete currentDateTime;
     return QSharedPointer<Box>::create(serialNumber, weight, length, height, width);
 }
@@ -23,7 +27,11 @@ QSharedPointer<Cylinder> SimpleContainerFactory::createCylinderContainer(double 
 {
     QDateTime* currentDateTime = new QDateTime();
     QString currentStringDate = currentDateTime->currentDateTime().toString("yyyy/MM/");
-    QString serialNumber = currentStringDate + "C" + QString::number(cylinderCode++);
+    QString serialNumber = "";
+    if (cylinderCode <= 9999)
+        serialNumber = currentStringDate + "C" + QString::number(cylinderCode++);
+    else
+        serialNumber = "Max containers reached.";
     delete currentDateTime;
     return QSharedPointer<Cylinder>::create(serialNumber, weight, diameter, height);
 }
