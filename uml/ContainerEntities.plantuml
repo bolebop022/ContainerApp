@@ -37,9 +37,34 @@ class Cylinder {
     + restoreFromMemento(CylinderMemento& memento)
 }
 
-class ContainerMemento
-class BoxMemento
-class CylinderMemento
+class ContainerMemento{
+    - QString serialNo 
+    - double weight
+    --
+    + ContainerMemento(QString serialNo, double weight)
+    + getSavedWeight() : double
+    + getSavedSerialNo() : QString
+}
+
+class BoxMemento{
+  - double length
+  - double height
+  - double width
+  --
+  + BoxMemento(QString serialNo, double weight, double length, double height, double width)
+  + getSavedLength() : double
+  + getSavedHeight() : double
+  + getSavedWidth() : double
+}
+
+class CylinderMemento{
+  - double diamaeter
+  - double height
+  --
+  + CylinderMemento(QString serialNo, double weight, double diameter, double height)
+  + getSavedDiameter() : double
+  + getSavedHeight() : double
+}
 
 Container <|-- Box
 Container <|-- Cylinder

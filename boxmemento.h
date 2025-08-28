@@ -13,6 +13,7 @@ public:
     const double getSavedLenght() const;
     const double getSavedHeight() const;
     const double getSavedWidth() const;
+    MementoType type() const override;
 
 private:
     double length;

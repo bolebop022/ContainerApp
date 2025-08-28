@@ -10,6 +10,7 @@ public:
         ContainerMemento(serialNo, weight), diameter(diameter), height(height){};
     const double getSavedDiameter() const;
     const double getSavedHeight() const;
+    MementoType type() const override;
 
 private:
     double diameter;

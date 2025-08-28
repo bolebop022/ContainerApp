@@ -26,10 +26,11 @@ QSharedPointer<ContainerMemento> Cylinder::createMemento() const
     return QSharedPointer<CylinderMemento>::create(serialNo, weight, diameter, height);
 }
 
-void Cylinder::restoreFromMemento(CylinderMemento& memento)
+void Cylinder::restoreFromMemento(const ContainerMemento& memento)
 {
-    serialNo = memento.getSavedSerialNo();
-    weight = memento.getSavedWeight();
-    diameter = memento.getSavedDiameter();
-    height = memento.getSavedHeight();
+    const CylinderMemento * m = dynamic_cast<const CylinderMemento *>(&memento);
+    serialNo = m->getSavedSerialNo();
+    weight = m->getSavedWeight();
+    diameter = m->getSavedDiameter();
+    height = m->getSavedHeight();
 }

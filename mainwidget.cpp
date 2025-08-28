@@ -1,6 +1,7 @@
 #include "mainwidget.h"
 #include "simplecontainerfactory.h"
 #include "inventoryhistory.h"
+#include "boxmemento.h"
 #include <QSpinBox>
 #include <QPushButton>
 #include <QListWidget>
@@ -73,8 +74,8 @@ MainWidget::MainWidget(QWidget *parent) :
     QLabel *labelClickOn(new QLabel("Click on item in list, choose a pallet number, and Move the container to that pallet"));
     labelClickOn->setWordWrap(true);
     bottomLayout->addWidget(displayUnallocated, 1, 0, 5, 1);
-    bottomLayout->addWidget(labelClickOn, 1, 1);
-    bottomLayout->addWidget(palletNumber, 2, 1);
+    bottomLayout->addWidget(labelClickOn, 0, 1);
+    bottomLayout->addWidget(palletNumber, 1, 1);
     palletNumber->setMinimum(1);
     bottomLayout->addWidget(buttonMoveToPallet, 3, 1);
     QLabel *labelBlank2(new QLabel);
@@ -104,6 +105,7 @@ MainWidget::MainWidget(QWidget *parent) :
     // Backup unnallocated containers
     connect(buttonBackup, &QPushButton::clicked, this, &MainWidget::backUpContainers);
     // Restore backed up unnallocated containers
+    connect(buttonRestore, &QPushButton::clicked, this, &MainWidget::restoreContainers);
 
     // setting main widget
     QVBoxLayout *vertical(new QVBoxLayout);
@@ -115,13 +117,14 @@ MainWidget::MainWidget(QWidget *parent) :
 void MainWidget::createBoxContainer()
 {
     SimpleContainerFactory& factory = SimpleContainerFactory::getInstance();
-    InventoryHistory& history = InventoryHistory::getInstance();
+
 
     // Create box item
     QSharedPointer<Box> newBox = factory.createBoxContainer(box_weight->value(), box_length->value(), box_height->value(), box_breadth->value());
 
-    // Backup box item
-    history.addMemento(newBox->createMemento());
+    // Add containter to unallocated container list
+    unallocatedContainers.push_back(newBox);
+
     qDebug() << newBox->getserialNo();
     displayUnallocated->addItem(newBox->getserialNo());
 }
@@ -129,9 +132,9 @@ void MainWidget::createBoxContainer()
 void MainWidget::createCylinderContainer()
 {
     SimpleContainerFactory& factory = SimpleContainerFactory::getInstance();
-    InventoryHistory& history = InventoryHistory::getInstance();
 
-    // Create box item
+
+    // Create a cylinder item
     QSharedPointer<Cylinder> newContainer = factory.createCylinderContainer(cylinder_weight->value(), cylinder_diameter->value(), cylinder_height->value());
 
     // Add containter to unallocated container list
@@ -151,10 +154,40 @@ void MainWidget::backUpContainers()
     for(auto& container: unallocatedContainers)
     {
         history.addMemento(container->createMemento());
+        qDebug() << "Backed up: " + container->getserialNo();
     }
 
     // Debugging purposes
-    qDebug() << history.getMemento(0)->get().getSavedSerialNo();
+    qDebug() << "First item in list: " + history.getMemento(0)->get().getSavedSerialNo();
+}
+
+void MainWidget::restoreContainers()
+{
+    InventoryHistory& history = InventoryHistory::getInstance();
+
+    for(int i = 0; i < history.getMementos().size(); ++i)
+    {
+        // Assumptions are that these are parrallel arrays.
+        QSharedPointer<ContainerMemento> containerMemento = history.getMementos().at(i);
+        QSharedPointer<Container> container = unallocatedContainers.at(i);
+        switch(containerMemento->type())
+        {
+            case MementoType::Box:
+            {
+                auto boxMemento = containerMemento.dynamicCast<BoxMemento>();
+                container->restoreFromMemento(*boxMemento);
+                break;
+            }
+            case MementoType::Cylinder:
+            {
+                auto cylinderMemento = containerMemento.dynamicCast<CylinderMemento>();
+                container->restoreFromMemento(*cylinderMemento);
+                break;
+            }
+        }
+            qDebug() << "Restored: " + container->getserialNo();
+
+    }
 }
 
 

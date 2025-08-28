@@ -40,6 +40,7 @@ private:
     void createCylinderContainer();
 
     void backUpContainers();
+    void restoreContainers();
 };
 
 #endif // MAINWIDGET_H

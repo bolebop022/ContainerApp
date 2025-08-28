@@ -12,6 +12,7 @@ public:
     static InventoryHistory& getInstance();
     void addMemento(QSharedPointer<ContainerMemento> memento);
     std::optional<std::reference_wrapper<const ContainerMemento>> getMemento(int index) const;
+    QVector<QSharedPointer<ContainerMemento>> getMementos();
 
 private:
     QVector<QSharedPointer<ContainerMemento>> mementos;

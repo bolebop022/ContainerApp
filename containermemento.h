@@ -3,6 +3,8 @@
 
 #include <QString>
 
+enum class MementoType { Box, Cylinder };
+
 class ContainerMemento{
 private:
     QString serialNo;
@@ -10,8 +12,9 @@ private:
 
 public:
     ContainerMemento(QString serialNo, double weight): serialNo(serialNo), weight(weight) {};
-    const double getSavedWeight(){ return weight; };
+    const double getSavedWeight() const { return weight; };
     const QString& getSavedSerialNo() const { return serialNo; };
+    virtual MementoType type() const = 0;
 };
 
 #endif // CONTAINERMEMENTO_H

@@ -18,3 +18,8 @@ std::optional<std::reference_wrapper<const ContainerMemento>>  InventoryHistory:
         return std::nullopt;
     return std::cref(*mementos.at(index));
 }
+
+QVector<QSharedPointer<ContainerMemento>> InventoryHistory::getMementos()
+{
+    return mementos;
+}

@@ -16,7 +16,7 @@ public:
     const double getWeight() const { return weight; };
     QString getserialNo() const{ return serialNo; };
     virtual QSharedPointer<ContainerMemento> createMemento() const = 0;
-    // virtual void restoreFromMemento(ContainerMemento& memento) = 0;
+    virtual void restoreFromMemento(const ContainerMemento& memento) = 0;
 
 };
 
