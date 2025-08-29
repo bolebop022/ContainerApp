@@ -106,6 +106,8 @@ MainWidget::MainWidget(QWidget *parent) :
     connect(buttonBackup, &QPushButton::clicked, this, &MainWidget::backUpContainers);
     // Restore backed up unnallocated containers
     connect(buttonRestore, &QPushButton::clicked, this, &MainWidget::restoreContainers);
+    // Move unallocated containers
+    connect(buttonMoveToPallet, &QPushButton::clicked, this, &MainWidget::moveToPellet);
 
     // setting main widget
     QVBoxLayout *vertical(new QVBoxLayout);
@@ -159,6 +161,11 @@ void MainWidget::backUpContainers()
 
     // Debugging purposes
     qDebug() << "First item in list: " + history.getMemento(0)->get().getSavedSerialNo();
+
+    // Clear the list and view after backing up the containers
+    unallocatedContainers.clear();
+    displayUnallocated->clear();
+    qDebug() << "List cleared.";
 }
 
 void MainWidget::restoreContainers()
@@ -169,28 +176,107 @@ void MainWidget::restoreContainers()
     {
         // Assumptions are that these are parrallel arrays.
         QSharedPointer<ContainerMemento> containerMemento = history.getMementos().at(i);
-        QSharedPointer<Container> container = unallocatedContainers.at(i);
+
         switch(containerMemento->type())
         {
             case MementoType::Box:
             {
                 auto boxMemento = containerMemento.dynamicCast<BoxMemento>();
-                container->restoreFromMemento(*boxMemento);
+                // Restore the containers to list and view
+                unallocatedContainers.append(Box::restoreFromMemento(*boxMemento));
+                displayUnallocated->addItem(boxMemento->getSavedSerialNo());
                 break;
             }
             case MementoType::Cylinder:
             {
                 auto cylinderMemento = containerMemento.dynamicCast<CylinderMemento>();
-                container->restoreFromMemento(*cylinderMemento);
+                // Restore the containers to list and view
+                unallocatedContainers.append(Cylinder::restoreFromMemento(*cylinderMemento));
+                displayUnallocated->addItem(cylinderMemento->getSavedSerialNo());
                 break;
             }
         }
-            qDebug() << "Restored: " + container->getserialNo();
+
+        qDebug() << "Restored: " + containerMemento->getSavedSerialNo();
 
     }
 }
 
+void MainWidget::moveToPellet()
+{
+    // Check if the user has selected a container from the displayed list
+    if(displayUnallocated->selectedItems().isEmpty())
+    {
+        qDebug() << "Select an unallocated container or containers.";
+        return;
+    }
 
+    // Find the container selected by the user
+    QString serialNo = displayUnallocated->currentItem()->text();
+    auto container = getUnallocatedContainer(serialNo);
+    if(container)
+    {
+        qDebug() << container->getserialNo();
+    }
+    else
+    {
+        qDebug() <<  "Container does not exist or has been allocated.";
+        return;
+    }
+
+    QString serialNoBefore = container->getserialNo();
+
+    // Move the container to the selected pallet.
+    if(pallets.contains(palletNumber->value()))
+    {
+
+        pallets[palletNumber->value()].append(std::move(container));
+
+        // Remove unallocated containers
+        unallocatedContainers.removeIf([&](const QSharedPointer<Container>& c) {
+            return c->getserialNo() == serialNo;
+        });
+
+        // Inform the user the container has been moved
+        qDebug() << serialNoBefore + " has been added to pallet " + QString::number(palletNumber->value());
+    }
+    else
+    {
+        QVector<QSharedPointer<Container>> newVector;
+        newVector.append(std::move(container));
+        pallets.insert(palletNumber->value(), newVector);
+
+        // Remove unallocated containers
+        unallocatedContainers.removeIf([&](const QSharedPointer<Container>& c) {
+            return c->getserialNo() == serialNo;
+        });
+
+        // Inform the user the container has been moved
+        qDebug() << serialNoBefore + " has been added to pallet " + QString::number(palletNumber->value());
+    }
+    // Redraw the list of updated objects
+    drawUnallocatedContainers();
+}
+
+void MainWidget::drawUnallocatedContainers()
+{
+    displayUnallocated->clear();
+    for(auto& container: unallocatedContainers)
+    {
+        qDebug() << container->getserialNo();
+        displayUnallocated->addItem(container->getserialNo());
+    }
+}
+
+QSharedPointer<Container> MainWidget::getUnallocatedContainer(const QString& text) const
+{
+    for(auto& container: unallocatedContainers)
+    {
+        if (container->getserialNo() == text)
+            return container;
+    }
+    return nullptr;
+}
 
 MainWidget::~MainWidget()
 {

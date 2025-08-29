@@ -31,14 +31,14 @@ QSharedPointer<ContainerMemento> Box::createMemento() const
     return QSharedPointer<BoxMemento>::create(this->getserialNo(), this->getWeight(), length, height, width);
 }
 
-void Box::restoreFromMemento(const ContainerMemento& memento)
+QSharedPointer<Box> Box::restoreFromMemento(const BoxMemento& memento)
 {
-    const BoxMemento * m = dynamic_cast<const BoxMemento *>(&memento);
-    this->serialNo = m->getSavedSerialNo();
-    this->weight = m->getSavedWeight();
-    this->height = m->getSavedHeight();
-    this->length = m->getSavedLenght();
-    this->width = m->getSavedWidth();
+    return std::move(QSharedPointer<Box>::create(
+                memento.getSavedSerialNo(),
+                memento.getSavedWeight(),
+                memento.getSavedLenght(),
+                memento.getSavedHeight(),
+                memento.getSavedWidth()));
 }
 
 

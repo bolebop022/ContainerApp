@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QSharedPointer>
 #include <QVector>
+#include <QMap>
 
 #include "container.h"
 
@@ -34,6 +35,7 @@ private:
     QWidget *postWidget;
 
     QVector<QSharedPointer<Container>> unallocatedContainers;
+    QMap<int, QVector<QSharedPointer<Container>>> pallets;
 
     // Creation methods
     void createBoxContainer();
@@ -41,6 +43,11 @@ private:
 
     void backUpContainers();
     void restoreContainers();
+    void moveToPellet();
+    QSharedPointer<Container> getUnallocatedContainer(const QString& text) const;
+
+    // Helper methods
+    void drawUnallocatedContainers();
 };
 
 #endif // MAINWIDGET_H

@@ -13,7 +13,7 @@ public:
     double getHeight() const;
     int getVolume() const override;
     QSharedPointer<ContainerMemento> createMemento() const override;
-    void restoreFromMemento(const ContainerMemento& memento) override;
+    static QSharedPointer<Cylinder> restoreFromMemento(const CylinderMemento& memento);
 private:
     double diameter;
     double height;

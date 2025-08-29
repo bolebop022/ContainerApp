@@ -20,7 +20,7 @@ public:
 
     // Memento functions
     QSharedPointer<ContainerMemento> createMemento() const override;
-    void restoreFromMemento(const ContainerMemento& memento) override;
+    static QSharedPointer<Box> restoreFromMemento(const BoxMemento& memento);
 
 private:
     double length;
